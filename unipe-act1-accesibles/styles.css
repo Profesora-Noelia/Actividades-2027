@@ -707,3 +707,107 @@ dialog::backdrop { background: rgba(45, 11, 36, 0.7); backdrop-filter: blur(3px)
 .modal-title { font-size: 1.4rem; color: var(--vino-oscuro); margin-bottom: 8px; }
 .modal-desc { font-size: 1.05rem; margin-bottom: 20px; line-height: 1.5; }
 .modal-actions { display: flex; gap: 12px; justify-content: center; width: 100%; }
+
+/* =========================================================
+   AJUSTES RESPONSIVOS GLOBALES (Tablets pequeñas y Celulares) 
+   ========================================================= */
+@media (max-width: 768px) {
+    /* 1. Encabezado: Apilar el título y los botones */
+    header.main-header { 
+        flex-direction: column; 
+        text-align: center; 
+        gap: 14px; 
+        padding: 16px; 
+    }
+    .header-actions { 
+        flex-wrap: wrap; 
+        justify-content: center; 
+    }
+    .header-title {
+        font-size: 1.15rem;
+    }
+
+    /* 2. Barra de progreso y puntaje: Apilar verticalmente */
+    .progress-and-score-row { 
+        flex-direction: column; 
+        align-items: stretch; 
+        text-align: center; 
+        gap: 12px;
+    }
+    .score-card-badge { 
+        width: 100%; 
+    }
+
+    /* 3. Tarjeta principal y cabecera: Reducir márgenes interiores */
+    .activity-card { 
+        padding: 20px 16px; 
+    }
+    .activity-header { 
+        flex-direction: column; 
+        gap: 12px; 
+        text-align: center; 
+    }
+    .activity-title { 
+        font-size: 1.25rem; 
+    }
+
+    /* 4. Panel Offcanvas de Accesibilidad: Ajustar al ancho del celular */
+    .offcanvas { 
+        width: 100%; 
+        max-width: 320px; 
+        right: -340px; /* Oculto fuera de pantalla adaptado al nuevo ancho */
+    }
+    .offcanvas-top-bar {
+        padding: 10px 14px;
+    }
+
+    /* 5. Paginación Inferior: Permitir salto de línea si no entra */
+    .bottom-nav-bar { 
+        flex-direction: column; 
+        gap: 16px; 
+        padding: 16px;
+    }
+    .pagination { 
+        flex-wrap: wrap; 
+        justify-content: center; 
+    }
+
+    /* 6. Modales (Ventanas emergentes): Optimizar espacio y pestañas */
+    .modal-inner { 
+        padding: 20px 16px; 
+    }
+    .help-tabs-nav { 
+        flex-direction: column; 
+        gap: 4px;
+        border-bottom: none;
+    }
+    .help-tab-btn { 
+        border-radius: 8px; 
+        border-bottom: none; 
+        border-left: 4px solid transparent; 
+        justify-content: flex-start;
+    }
+    .help-tab-btn.active { 
+        border-left-color: var(--vino-medio); 
+        background: var(--vino-fondo-suave);
+    }
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+/* Ajuste extremo para pantallas de celulares muy angostas (Ej: iPhone SE) */
+@media (max-width: 400px) {
+    .options-list .option-button {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+    }
+    .btn-voice-command {
+        width: 100%;
+        justify-content: center;
+    }
+    .interaction-header-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
