@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTargetIndex = 0;
 
     window.getReadingTargets = function() {
-        return Array.from(document.querySelectorAll('.stimulus-card, .consigna-label, .option-button'));
+        return Array.from(document.querySelectorAll('.stimulus-card, .consigna-text, .option-button'));
     };
 
     window.updateLineFocusPosition = function() {
@@ -271,23 +271,28 @@ const wordDb = {
 };
 
 function applyGrammarHighlights() {
-    const showSyllables = document.getElementById('a11y-syllables-toggle').checked;
-    const showNouns = document.getElementById('a11y-pos-nouns').checked;
-    const showVerbs = document.getElementById('a11y-pos-verbs').checked;
-    const showAdj = document.getElementById('a11y-pos-adj').checked;
-    const showAdv = document.getElementById('a11y-pos-adv').checked;
-    const showLabels = document.getElementById('a11y-labels-toggle').checked;
+    const showSyllables = document.getElementById('a11y-syllables-toggle')?.checked || false;
+    const showNouns = document.getElementById('a11y-pos-nouns')?.checked || false;
+    const showVerbs = document.getElementById('a11y-pos-verbs')?.checked || false;
+    const showAdj = document.getElementById('a11y-pos-adj')?.checked || false;
+    const showAdv = document.getElementById('a11y-pos-adv')?.checked || false;
+    const showLabels = document.getElementById('a11y-labels-toggle')?.checked || false;
 
-    document.querySelectorAll('.stimulus-text, .consigna-label').forEach(container => {
+    // SELECTORES CORREGIDOS: Enlaza directo al contenido conceptual en pantalla
+    document.querySelectorAll('.stimulus-context-title, .consigna-text, .phase-pill-badge').forEach(container => {
         if (!container.getAttribute('data-original-text')) {
             container.setAttribute('data-original-text', container.innerText);
         }
         const text = container.getAttribute('data-original-text');
+        
+        // Separa el texto por palabras y signos para no romper el espaciado natural
         const words = text.split(/(\s+)/);
 
         container.innerHTML = words.map(chunk => {
-            const clean = chunk.toLowerCase().replace(/[.,:¿?()^]/g, '');
+            // Limpieza robusta del string para contrastar en base de datos
+            const clean = chunk.toLowerCase().replace(/[.,:;¿?()^¡!"«»]/g, '').trim();
             const entry = wordDb[clean];
+            
             if (!entry) return chunk;
 
             let displayText = showSyllables ? entry.syl : chunk;
