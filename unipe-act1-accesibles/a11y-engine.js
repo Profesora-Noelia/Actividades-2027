@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openBtn = document.getElementById('btn-open-a11y');
     const closeBtn = document.getElementById('btn-close-a11y');
 
-    // ELEMENTOS DEL FONDO A AISLAR CON INERT (TRAMPA DE FOCO OFICIAL)
+    // ELEMENTOS DEL FONDO A AISLAR CON INERT
     const backgroundSelectors = ['header', '.wide-container', '.project-footer', '.skip-link'];
 
     function openOffcanvas() {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // PESTAÑAS DEL OFFCANVAS: WAI-ARIA TABS PATTERN + ROVING TABINDEX
+    // PESTAÑAS DEL OFFCANVAS
     const a11yTabNav = document.querySelector('.a11y-tabs-nav');
     const a11yTabBtns = Array.from(document.querySelectorAll('.a11y-tab-btn'));
     const a11yPanels = Array.from(document.querySelectorAll('.a11y-tab-panel'));
@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => activateA11yTab(idx, false));
     });
 
-    // Navegación accesible con flechas, Home y End
     if (a11yTabNav) {
         a11yTabNav.addEventListener('keydown', (e) => {
             let activeIdx = a11yTabBtns.findIndex(b => b.getAttribute('aria-selected') === 'true');
@@ -100,9 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sizeValLabel.textContent = `${pct}%`;
         sizeSlider.setAttribute('aria-valuenow', pct);
         
-        if (document.getElementById('a11y-line-focus-toggle').checked) {
-            updateLineFocusPosition();
-        }
+        if (document.getElementById('a11y-line-focus-toggle').checked) updateLineFocusPosition();
     });
 
     document.getElementById('a11y-spacing-toggle').addEventListener('change', (e) => {
@@ -136,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id).addEventListener('change', () => applyGrammarHighlights());
     });
 
-    // FOCO DE LÍNEA CORREGIDO (Sincronizado con nodos del DOM)
+    // FOCO DE LÍNEA CORREGIDO
     const lineFocusToggle = document.getElementById('a11y-line-focus-toggle');
     const overlay = document.getElementById('line-focus-overlay');
     const lineWindow = document.getElementById('line-focus-window');
@@ -165,10 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const windowHeight = computedLineHeight * heightMultiplier;
 
         lineWindow.style.height = `${windowHeight}px`;
-        
         let topPos = rect.top + (rect.height / 2) - (windowHeight / 2);
         if (topPos < 0) topPos = rect.top;
-        
         lineWindow.style.top = `${topPos}px`;
     };
 
@@ -196,22 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('btn-focus-prev').addEventListener('click', () => {
-        currentTargetIndex--;
-        updateLineFocusPosition();
-    });
-    
-    document.getElementById('btn-focus-next').addEventListener('click', () => {
-        currentTargetIndex++;
-        updateLineFocusPosition();
-    });
-    
-    window.addEventListener('resize', () => {
-        if (lineFocusToggle.checked) updateLineFocusPosition();
-    });
-    window.addEventListener('scroll', () => {
-        if (lineFocusToggle.checked) updateLineFocusPosition();
-    }, { passive: true });
+    document.getElementById('btn-focus-prev').addEventListener('click', () => { currentTargetIndex--; updateLineFocusPosition(); });
+    document.getElementById('btn-focus-next').addEventListener('click', () => { currentTargetIndex++; updateLineFocusPosition(); });
+    window.addEventListener('resize', () => { if (lineFocusToggle.checked) updateLineFocusPosition(); });
+    window.addEventListener('scroll', () => { if (lineFocusToggle.checked) updateLineFocusPosition(); }, { passive: true });
 
     // DICCIONARIO PICTOGRÁFICO
     document.addEventListener('click', (e) => {
@@ -242,18 +225,27 @@ document.addEventListener('DOMContentLoaded', () => {
     setupIntegratedAudio();
 });
 
-// BASE DE VOCABULARIO ENRIQUECIDA PARA LA NUEVA SECUENCIA PEDAGÓGICA
+// BASE DE VOCABULARIO EXTENDIDA (Incluye plurales, adjetivos y verbos del entorno didáctico)
 const wordDb = {
+    // Sustantivos
+    'bit': { type: 'noun', syl: 'bit', label: 's', icon: 'memory' },
     'bits': { type: 'noun', syl: 'bits', label: 's', icon: 'memory' },
     'byte': { type: 'noun', syl: 'byte', label: 's', icon: 'data_object' },
     'bytes': { type: 'noun', syl: 'bytes', label: 's', icon: 'data_object' },
     'kilobyte': { type: 'noun', syl: 'ki·lo·byte', label: 's', icon: 'storage' },
+    'kilobytes': { type: 'noun', syl: 'ki·lo·bytes', label: 's', icon: 'storage' },
     'megabyte': { type: 'noun', syl: 'me·ga·byte', label: 's', icon: 'hard_drive' },
+    'megabytes': { type: 'noun', syl: 'me·ga·bytes', label: 's', icon: 'hard_drive' },
     'gigabyte': { type: 'noun', syl: 'gi·ga·byte', label: 's', icon: 'database' },
+    'gigabytes': { type: 'noun', syl: 'gi·ga·bytes', label: 's', icon: 'database' },
     'terabyte': { type: 'noun', syl: 'te·ra·byte', label: 's', icon: 'cloud' },
+    'terabytes': { type: 'noun', syl: 'te·ra·bytes', label: 's', icon: 'cloud' },
     'petabyte': { type: 'noun', syl: 'pe·ta·byte', label: 's', icon: 'server' },
+    'petabytes': { type: 'noun', syl: 'pe·ta·bytes', label: 's', icon: 'server' },
     'memoria': { type: 'noun', syl: 'me·mo·ria', label: 's', icon: 'memory' },
+    'memorias': { type: 'noun', syl: 'me·mo·rias', label: 's', icon: 'memory' },
     'computadora': { type: 'noun', syl: 'com·pu·ta·do·ra', label: 's', icon: 'computer' },
+    'computadoras': { type: 'noun', syl: 'com·pu·ta·do·ras', label: 's', icon: 'computer' },
     'pendrive': { type: 'noun', syl: 'pen·drive', label: 's', icon: 'usb' },
     'archivo': { type: 'noun', syl: 'ar·chi·vo', label: 's', icon: 'description' },
     'archivos': { type: 'noun', syl: 'ar·chi·vos', label: 's', icon: 'folder' },
@@ -262,12 +254,30 @@ const wordDb = {
     'información': { type: 'noun', syl: 'in·for·ma·ción', label: 's', icon: 'info' },
     'almacenamiento': { type: 'noun', syl: 'al·ma·ce·na·mien·to', label: 's', icon: 'folder' },
     'unidad': { type: 'noun', syl: 'u·ni·dad', label: 's', icon: 'square' },
+    'unidades': { type: 'noun', syl: 'u·ni·da·des', label: 's', icon: 'square' },
+    'capacidad': { type: 'noun', syl: 'ca·pa·ci·dad', label: 's', icon: 'storage' },
+    'capacidades': { type: 'noun', syl: 'ca·pa·ci·da·des', label: 's', icon: 'storage' },
+    'sistema': { type: 'noun', syl: 'sis·te·ma', label: 's', icon: 'settings' },
+    
+    // Adjetivos
     'exacta': { type: 'adj', syl: 'e·xac·ta', label: 'adj' },
     'mínima': { type: 'adj', syl: 'mí·ni·ma', label: 'adj' },
     'solicitada': { type: 'adj', syl: 'so·li·ci·ta·da', label: 'adj' },
     'libre': { type: 'adj', syl: 'li·bre', label: 'adj' },
+    'básica': { type: 'adj', syl: 'bá·si·ca', label: 'adj' },
+    'fundamental': { type: 'adj', syl: 'fun·da·men·tal', label: 'adj' },
+    
+    // Verbos
     'seleccioná': { type: 'verb', syl: 'se·lec·cio·ná', label: 'v' },
-    'equivale': { type: 'verb', syl: 'e·qui·va·le', label: 'v' }
+    'equivale': { type: 'verb', syl: 'e·qui·va·le', label: 'v' },
+    'medir': { type: 'verb', syl: 'me·dir', label: 'v' },
+    'crear': { type: 'verb', syl: 'cre·ar', label: 'v' },
+    'forma': { type: 'verb', syl: 'for·ma', label: 'v' },
+    'agrupar': { type: 'verb', syl: 'a·gru·par', label: 'v' },
+    'calcular': { type: 'verb', syl: 'cal·cu·lar', label: 'v' },
+    'guardar': { type: 'verb', syl: 'guar·dar', label: 'v' },
+    'reconocer': { type: 'verb', syl: 're·co·no·cer', label: 'v' },
+    'necesita': { type: 'verb', syl: 'ne·ce·si·ta', label: 'v' }
 };
 
 function applyGrammarHighlights() {
@@ -278,24 +288,34 @@ function applyGrammarHighlights() {
     const showAdv = document.getElementById('a11y-pos-adv')?.checked || false;
     const showLabels = document.getElementById('a11y-labels-toggle')?.checked || false;
 
-    // SELECTORES CORREGIDOS: Enlaza directo al contenido conceptual en pantalla
+    // SELECTORES CORREGIDOS: Aísla el texto de puntuaciones sin romper el DOM
     document.querySelectorAll('.stimulus-context-title, .consigna-text, .phase-pill-badge').forEach(container => {
-        if (!container.getAttribute('data-original-text')) {
+        if (!container.hasAttribute('data-original-text')) {
             container.setAttribute('data-original-text', container.innerText);
         }
         const text = container.getAttribute('data-original-text');
         
-        // Separa el texto por palabras y signos para no romper el espaciado natural
+        // Separa el texto respetando los espacios
         const words = text.split(/(\s+)/);
 
         container.innerHTML = words.map(chunk => {
-            // Limpieza robusta del string para contrastar en base de datos
-            const clean = chunk.toLowerCase().replace(/[.,:;¿?()^¡!"«»]/g, '').trim();
+            if (!chunk.trim()) return chunk; // Es solo espacio
+
+            // Expresión regular que separa signos de puntuación iniciales/finales de la palabra pura
+            const match = chunk.match(/^([^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]*)([a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+)([^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]*)$/);
+            
+            if (!match) return chunk;
+
+            const prePunct = match[1];
+            const coreWord = match[2];
+            const postPunct = match[3];
+
+            const clean = coreWord.toLowerCase();
             const entry = wordDb[clean];
             
             if (!entry) return chunk;
 
-            let displayText = showSyllables ? entry.syl : chunk;
+            let displayCore = showSyllables && entry.syl ? entry.syl : coreWord;
             let cssClass = '';
             let labelTag = '';
 
@@ -308,12 +328,17 @@ function applyGrammarHighlights() {
                 labelTag = `<span class="pos-label-tag" aria-hidden="true">${entry.label}</span>`;
             }
 
-            return `<span class="${cssClass} dict-word" data-word="${clean}" data-icon="${entry.icon || 'help'}">${displayText}${labelTag}</span>`;
+            // Si hay clase o sílaba, inyectamos el HTML aislando los signos de puntuación (ej: ¿computadora?)
+            if (cssClass || showSyllables) {
+                return `${prePunct}<span class="${cssClass} dict-word" data-word="${clean}" data-icon="${entry.icon || 'help'}">${displayCore}${labelTag}</span>${postPunct}`;
+            }
+
+            return chunk;
         }).join('');
     });
 }
 
-// MOTOR DE TTS CORREGIDO (Carga asíncrona, filtrado de género, velocidad reactiva)
+// MOTOR DE TTS CORREGIDO
 let isSpeaking = false;
 let voicesList = [];
 
